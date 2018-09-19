@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+
+  product-db:
+    build:
+      context: .
+      dockerfile: products-db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: cloudcom2018
+    networks:
+      - cloudcomnet
+
+
+
+networks:
+  cloudcomnet: {}
+
