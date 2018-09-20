@@ -12,6 +12,16 @@ services:
       - cloudcomnet
 
 
+  reviews-db:
+    build:
+      context: .
+      dockerfile: reviews-db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: cloudcom2018
+    networks:
+      - cloudcomnet
+
+
 
 networks:
   cloudcomnet: {}
