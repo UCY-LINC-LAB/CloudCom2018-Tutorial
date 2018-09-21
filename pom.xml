@@ -11,6 +11,7 @@
     <modules>
         <module>product</module>
         <module>reviews</module>
+        <module>ratings</module>
     </modules>
 
 
