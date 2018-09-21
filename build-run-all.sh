@@ -5,7 +5,7 @@ docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(d
 
 docker-compose up -d
 
-sleep 3
+sleep 10
 
 clear
 
