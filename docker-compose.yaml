@@ -8,8 +8,15 @@ services:
       dockerfile: products-db/Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
+    expose:
+      - "13306"
+    ports:
+      - "13306:3306"
     networks:
-      - cloudcomnet
+      cloudcomnet:
+        ipv4_address: 172.18.0.23
+        aliases:
+          - db.products.cloudcom
 
 
   reviews-db:
@@ -18,8 +25,15 @@ services:
       dockerfile: reviews-db/Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
+    expose:
+      - "23306"
+    ports:
+      - "23306:3306"
     networks:
-      - cloudcomnet
+      cloudcomnet:
+        ipv4_address: 172.18.0.13
+        aliases:
+          - db.reviews.cloudcom
 
 
   ratings-db:
@@ -28,11 +42,39 @@ services:
       dockerfile: ratings-db/Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
+    expose:
+      - "33306"
+    ports:
+      - "33306:3306"
     networks:
-    - cloudcomnet
+      cloudcomnet:
+        ipv4_address: 172.18.0.3
+        aliases:
+          - db.ratings.cloudcom
 
+
+  ratings:
+    build:
+      context: .
+      dockerfile: ratings/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.4
+        aliases:
+          - app.ratings.cloudcom
+    expose:
+      - "18082"
+    ports:
+      - "18082:8082"
 
 
 networks:
-  cloudcomnet: {}
+  cloudcomnet:
+   ipam:
+     driver: default
+     config:
+       - subnet: 172.18.0.0/16
+
+
 
