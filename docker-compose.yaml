@@ -67,6 +67,51 @@ services:
       - "18082"
     ports:
       - "18082:8082"
+    depends_on:
+      - ratings-db
+      - reviews-db
+      - product-db
+
+
+  reviews:
+    build:
+      context: .
+      dockerfile: reviews/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.14
+        aliases:
+          - app.reviews.cloudcom
+    expose:
+      - "28082"
+    ports:
+      - "28082:8081"
+    depends_on:
+      - reviews-db
+      - ratings-db
+      - product-db
+
+
+  product:
+    build:
+      context: .
+      dockerfile: product/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.24
+        aliases:
+        - app.product.cloudcom
+    expose:
+    - "38082"
+    ports:
+    - "38082:8080"
+    depends_on:
+    - reviews-db
+    - ratings-db
+    - product-db
+
 
 
 networks:
