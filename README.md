@@ -17,3 +17,14 @@
 | Reviews| http://localhost:28082/reviews|
 | Rating | http://localhost:18082/ratings|
 
+
+---
+
+Mpost probably I will make use of the "choreography" approach rather than the "orchestrator" approach. 
+Choreography --> Strong Decoupling
+
+Netflix OSS
+* Eureka Service Discovery
+* Hystrix Circuit Breaking
+* Zuul Api Gateway
+ 

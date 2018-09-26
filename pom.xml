@@ -12,6 +12,8 @@
         <module>product</module>
         <module>reviews</module>
         <module>ratings</module>
+        <module>eureka-sd</module>
+
     </modules>
 
 
