@@ -13,6 +13,7 @@
         <module>reviews</module>
         <module>ratings</module>
         <module>eureka-sd</module>
+        <module>apigateway</module>
 
     </modules>
 

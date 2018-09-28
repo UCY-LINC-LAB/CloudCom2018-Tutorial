@@ -113,6 +113,27 @@ services:
     - product-db
 
 
+  apigateway:
+    build:
+      context: .
+      dockerfile: apigateway/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.2
+        aliases:
+        - app.api.cloudcom
+    expose:
+    - "19000"
+    ports:
+    - "19000:19000"
+    depends_on:
+    - reviews-db
+    - ratings-db
+    - product-db
+
+
+
 
 networks:
   cloudcomnet:
