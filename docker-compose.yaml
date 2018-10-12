@@ -71,6 +71,7 @@ services:
       cloudcomnet:
         aliases:
           - app.product.cloudcom
+          - review.localhost
     expose:
       - "38082"
     ports:
