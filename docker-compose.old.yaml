@@ -1,0 +1,213 @@
+version: "3"
+
+services:
+
+  product-db:
+    build:
+      context: .
+      dockerfile: products-db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: cloudcom2018
+    expose:
+      - "13306"
+    ports:
+      - "13306:3306"
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.23
+        aliases:
+          - db.products.cloudcom
+#    network_mode: "host"
+
+
+
+  reviews-db:
+    build:
+      context: .
+      dockerfile: reviews-db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: cloudcom2018
+    expose:
+      - "23306"
+    ports:
+      - "23306:3306"
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.13
+        aliases:
+          - db.reviews.cloudcom
+#
+#
+#  ratings-db:
+#    build:
+#      context: .
+#      dockerfile: ratings-db/Dockerfile
+#    environment:
+#      MYSQL_ROOT_PASSWORD: cloudcom2018
+#    expose:
+#      - "33306"
+#    ports:
+#      - "33306:3306"
+#    networks:
+#      cloudcomnet:
+#        ipv4_address: 172.18.0.3
+#        aliases:
+#          - db.ratings.cloudcom
+#
+#
+#  ratings:
+#    build:
+#      context: .
+#      dockerfile: ratings/Dockerfile
+#    restart: on-failure
+#    networks:
+#      cloudcomnet:
+#        ipv4_address: 172.18.0.4
+#        aliases:
+#          - app.ratings.cloudcom
+#    expose:
+#      - "18082"
+#    ports:
+#      - "18082:8082"
+#    depends_on:
+#      - ratings-db
+#      - reviews-db
+#      - product-db
+#
+
+  reviews:
+    build:
+      context: .
+      dockerfile: reviews/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.14
+        aliases:
+          - app.reviews.cloudcom
+    expose:
+      - "28082"
+    ports:
+      - "28082:8081"
+    depends_on:
+      - reviews-db
+      - ratings-db
+      - product-db
+
+
+  product:
+    build:
+      context: .
+      dockerfile: product/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+#        ipv4_address: 172.18.0.24
+        aliases:
+        - app.product.cloudcom
+#    network_mode: "host"
+    expose:
+    - "38082"
+#    ports:
+#    - "38082:8080"
+    depends_on:
+#    - reviews-db
+#    - ratings-db
+    - product-db
+
+
+#  apigateway:
+##    network_mode: "host"
+#    build:
+#      context: .
+#      dockerfile: apigateway/Dockerfile
+#    restart: on-failure
+#    networks:
+#      cloudcomnet:
+##        ipv4_address: 172.18.0.2
+#        aliases:
+#        - app.api.cloudcom
+#    expose:
+#    - "19000"
+#    - "10004"
+##    ports:
+##    - "19000:19000"
+##    - "10004:10004"
+#    depends_on:
+##      - eurekasd
+#      - consul_server
+##    - reviews-db
+##    - ratings-db
+##    - product-db
+
+
+#  eurekasd:
+#    build:
+#      context: .
+#      dockerfile: eureka-sd/Dockerfile
+#    restart: on-failure
+#    networks:
+#      cloudcomnet:
+#        ipv4_address: 172.18.0.100
+#        aliases:
+#        - app.eureka.cloudcom
+#    expose:
+#    - "8761"
+#    ports:
+#    - "8761:8761"
+#    depends_on:
+#    - reviews-db
+#    - ratings-db
+#    - product-db
+
+
+  consul_server:
+#    networks:
+#      cloudcomnet:
+#        ipv4_address: 172.18.0.200
+#        aliases:
+#        - consul.cloudcom
+    image: consul
+#    network_mode: "host"
+    networks:
+      cloudcomnet:
+         ipv4_address: 172.18.0.200
+         aliases:
+           - consul.cloudcom
+
+    environment:
+      CONSUL_LOCAL_CONFIG: '{"skip_leave_on_interrupt": true}'
+#      CONSUL_BIND_INTERFACE: enp8s0
+#      CONSUL_BIND_INTERFACE: docker0
+    volumes:
+      - "consul_data:/consul/data"
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+      - '11153:53/udp'
+    restart: on-failure
+#    command: agent -ui -data-dir /consul/data -server -bootstrap-expect 1 -bind=172.18.0.200 -client 0.0.0.0 -advertise 127.0.0.1
+    command: agent -ui -data-dir /consul/data -server -bootstrap-expect 1 -bind=172.18.0.200  -client 0.0.0.0
+
+
+
+
+networks:
+  cloudcomnet:
+   ipam:
+     driver: default
+     config:
+       - subnet: 172.18.0.0/16
+
+
+
+volumes:
+  consul_data:
+
+
+
+

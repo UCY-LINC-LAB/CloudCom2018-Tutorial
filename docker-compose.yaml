@@ -2,6 +2,49 @@ version: "3"
 
 services:
 
+
+  consul_server:
+    image: consul
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.200
+        aliases:
+          - consul.cloudcom
+    environment:
+      CONSUL_LOCAL_CONFIG: '{"skip_leave_on_interrupt": true}'
+    volumes:
+      - "consul_data:/consul/data"
+    ports:
+      - '8300:8300'
+      - '8301:8301'
+      - '8301:8301/udp'
+      - '8500:8500'
+      - '8600:8600'
+      - '8600:8600/udp'
+      - '11153:53/udp'
+    restart: on-failure
+    command: agent -ui -data-dir /consul/data -server -bootstrap-expect 1 -bind=172.18.0.200  -client=0.0.0.0
+
+
+  reverse-proxy:
+    build:
+      context: .
+      dockerfile: reverse-proxy/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        ipv4_address: 172.18.0.201
+        aliases:
+          - app.reverseproxy.cloudcom
+    expose:
+      - "8080"
+      - "80"
+    ports:
+      - "8080:8080"
+      - "80:80"
+    command: traefik --consulcatalog.endpoint=172.18.0.200:8500
+
+
   product-db:
     build:
       context: .
@@ -19,6 +62,23 @@ services:
           - db.products.cloudcom
 
 
+  product:
+    build:
+      context: .
+      dockerfile: product/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        aliases:
+          - app.product.cloudcom
+    expose:
+      - "38082"
+    ports:
+      - "38082-38182:38082"
+    depends_on:
+      - product-db
+
+
   reviews-db:
     build:
       context: .
@@ -26,51 +86,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
     expose:
-      - "23306"
+     - "23306"
     ports:
-      - "23306:3306"
+     - "23306:3306"
     networks:
       cloudcomnet:
-        ipv4_address: 172.18.0.13
         aliases:
           - db.reviews.cloudcom
-
-
-  ratings-db:
-    build:
-      context: .
-      dockerfile: ratings-db/Dockerfile
-    environment:
-      MYSQL_ROOT_PASSWORD: cloudcom2018
-    expose:
-      - "33306"
-    ports:
-      - "33306:3306"
-    networks:
-      cloudcomnet:
-        ipv4_address: 172.18.0.3
-        aliases:
-          - db.ratings.cloudcom
-
-
-  ratings:
-    build:
-      context: .
-      dockerfile: ratings/Dockerfile
-    restart: on-failure
-    networks:
-      cloudcomnet:
-        ipv4_address: 172.18.0.4
-        aliases:
-          - app.ratings.cloudcom
-    expose:
-      - "18082"
-    ports:
-      - "18082:8082"
-    depends_on:
-      - ratings-db
-      - reviews-db
-      - product-db
 
 
   reviews:
@@ -82,35 +104,14 @@ services:
       cloudcomnet:
         ipv4_address: 172.18.0.14
         aliases:
-          - app.reviews.cloudcom
+        - app.reviews.cloudcom
     expose:
       - "28082"
     ports:
-      - "28082:8081"
+      - "28082-28182:8081"
     depends_on:
       - reviews-db
-      - ratings-db
-      - product-db
 
-
-  product:
-    build:
-      context: .
-      dockerfile: product/Dockerfile
-    restart: on-failure
-    networks:
-      cloudcomnet:
-        ipv4_address: 172.18.0.24
-        aliases:
-        - app.product.cloudcom
-    expose:
-    - "38082"
-    ports:
-    - "38082:8080"
-    depends_on:
-    - reviews-db
-    - ratings-db
-    - product-db
 
 
   apigateway:
@@ -120,27 +121,31 @@ services:
     restart: on-failure
     networks:
       cloudcomnet:
-        ipv4_address: 172.18.0.2
         aliases:
         - app.api.cloudcom
     expose:
-    - "19000"
+      - "19000"
+      - "10004"
     ports:
-    - "19000:19000"
-    depends_on:
-    - reviews-db
-    - ratings-db
-    - product-db
-
+      - "19000-20000:19000"
+      - "10004-11004:10004"
+    environment:
+      - SERVICE_TAGS=traefik.enable=true,traefik.frontend.entryPoints=http,traefik.frontend.rule=Host:172.18.0.2
 
 
 
 networks:
   cloudcomnet:
-   ipam:
-     driver: default
-     config:
-       - subnet: 172.18.0.0/16
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/16
+
+
+
+volumes:
+  consul_data:
+
 
 
 
