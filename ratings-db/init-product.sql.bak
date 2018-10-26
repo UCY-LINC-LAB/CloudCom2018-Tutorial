@@ -1,3 +1,5 @@
+CREATE DATABASE ratings;
+USE ratings;
 
 CREATE TABLE `ratings` (
   `id` INT NOT NULL AUTO_INCREMENT,

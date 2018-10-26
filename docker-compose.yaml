@@ -2,12 +2,11 @@ version: "3"
 
 services:
 
-
   consul_server:
     image: consul
     networks:
       cloudcomnet:
-        ipv4_address: 172.18.0.200
+        ipv4_address: 172.190.0.200
         aliases:
           - consul.cloudcom
     environment:
@@ -23,8 +22,7 @@ services:
       - '8600:8600/udp'
       - '11153:53/udp'
     restart: on-failure
-    command: agent -ui -data-dir /consul/data -server -bootstrap-expect 1 -bind=172.18.0.200  -client=0.0.0.0
-
+    command: agent -ui -data-dir /consul/data -server -bootstrap-expect 1 -bind=172.190.0.200  -client=0.0.0.0
 
   reverse-proxy:
     build:
@@ -33,7 +31,7 @@ services:
     restart: on-failure
     networks:
       cloudcomnet:
-        ipv4_address: 172.18.0.201
+        ipv4_address: 172.190.0.201
         aliases:
           - app.reverseproxy.cloudcom
     expose:
@@ -42,31 +40,49 @@ services:
     ports:
       - "8080:8080"
       - "80:80"
-    command: traefik --consulcatalog.endpoint=172.18.0.200:8500
+    command: traefik --consulcatalog.endpoint=172.190.0.200:8500
 
-
-  product-db:
+  apigateway:
     build:
       context: .
-      dockerfile: products-db/Dockerfile
+      dockerfile: apigateway/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        aliases:
+          - app.api.cloudcom
+    expose:
+      - "19000"
+      - "10004"
+    ports:
+      - "19000-20000:19000"
+      - "10004-11004:10004"
+    environment:
+      - SERVICE_TAGS=traefik.enable=true,traefik.frontend.entryPoints=http,traefik.frontend.rule=Host:172.18.0.2
+    extra_hosts:
+      - "review.localhost:172.190.0.201"
+      - "apigateway.localhost:172.190.0.201"
+      - "product.localhost:172.190.0.201"
+      - "rating.localhost:172.190.0.201"
+      - "book.localhost:172.190.0.201"
+
+  product-db:
+    image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
+      MYSQL_DATABASE: products
+    volumes:
+      - "./data/products/db/mysql:/var/lib/mysql"
+      - "./products-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
     expose:
-      - "13306"
+      - "3306"
     ports:
       - "13306:3306"
     networks:
       cloudcomnet:
-        ipv4_address: 172.18.0.23
+        ipv4_address: 172.190.0.23
         aliases:
           - db.products.cloudcom
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M
-#    volumes:
-#      - "./data/products/db/mysql:/var/lib/mysql"
-
 
   book:
     build:
@@ -84,34 +100,25 @@ services:
       - "38082-38182:38083"
     depends_on:
       - product-db
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M
-#
+
 
   ratings-db:
-    build:
-      context: .
-      dockerfile: ratings-db/Dockerfile
+    image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
+      MYSQL_DATABASE: ratings
+    volumes:
+      - "./data/ratings/db/mysql:/var/lib/mysql"
+      - "./ratings-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
     expose:
       - "33306"
     ports:
       - "33306:3306"
     networks:
       cloudcomnet:
-#        ipv4_address: 172.18.0.3
+        ipv4_address: 172.190.0.3
         aliases:
           - db.ratings.cloudcom
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M
-#    volumes:
-#      - "./data/ratings/db/mysql:/var/lib/mysql"
-
 
   ratings:
     build:
@@ -128,84 +135,9 @@ services:
       - "18082-18182:8082"
     depends_on:
       - ratings-db
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M
-#
-
-#  reviews-db:
-#    build:
-#      context: .
-#      dockerfile: reviews-db/Dockerfile
-#    environment:
-#      MYSQL_ROOT_PASSWORD: cloudcom2018
-#    expose:
-#     - "23306"
-#    ports:
-#     - "23306:3306"
-#    networks:
-#      cloudcomnet:
-#        aliases:
-#          - db.reviews.cloudcom
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M
-#    volumes:
-#        - "./data/reviews/db/mysql:/var/lib/mysql"
 
 
-#  reviews:
-#    build:
-#      context: .
-#      dockerfile: reviews/Dockerfile
-#    restart: on-failure
-#    networks:
-#      cloudcomnet:
-##        ipv4_address: 172.18.0.14
-#        aliases:
-#        - app.reviews.cloudcom
-#    expose:
-#      - "8081"
-#    ports:
-#      - "28082-28182:8081"
-#    depends_on:
-#      - reviews-db
-##    deploy:
-##      resources:
-##        limits:
-##          memory: 512M
 
-
-  apigateway:
-    build:
-      context: .
-      dockerfile: apigateway/Dockerfile
-    restart: on-failure
-    networks:
-      cloudcomnet:
-        aliases:
-        - app.api.cloudcom
-    expose:
-      - "19000"
-      - "10004"
-    ports:
-      - "19000-20000:19000"
-      - "10004-11004:10004"
-    environment:
-      - SERVICE_TAGS=traefik.enable=true,traefik.frontend.entryPoints=http,traefik.frontend.rule=Host:172.18.0.2
-    extra_hosts:
-      - "review.localhost:172.18.0.201"
-      - "apigateway.localhost:172.18.0.201"
-      - "product.localhost:172.18.0.201"
-      - "rating.localhost:172.18.0.201"
-      - "book.localhost:172.18.0.201"
-#    deploy:
-#      resources:
-#        limits:
-#          memory: 512M
-#
 
 
 networks:
@@ -213,13 +145,7 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.18.0.0/16
-
-
+      - subnet: 172.190.0.0/16
 
 volumes:
   consul_data:
-
-
-
-
