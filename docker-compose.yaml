@@ -58,7 +58,7 @@ services:
       - "19000-20000:19000"
       - "10004-11004:10004"
     environment:
-      - SERVICE_TAGS=traefik.enable=true,traefik.frontend.entryPoints=http,traefik.frontend.rule=Host:172.18.0.2
+      - SERVICE_TAGS=traefik.enable=true,traefik.frontend.entryPoints=http,traefik.frontend.rule=Host:172.190.0.2
     extra_hosts:
       - "review.localhost:172.190.0.201"
       - "apigateway.localhost:172.190.0.201"
