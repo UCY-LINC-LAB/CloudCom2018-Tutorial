@@ -60,59 +60,122 @@ services:
         ipv4_address: 172.18.0.23
         aliases:
           - db.products.cloudcom
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 512M
+#    volumes:
+#      - "./data/products/db/mysql:/var/lib/mysql"
 
 
-  product:
+  book:
     build:
       context: .
-      dockerfile: product/Dockerfile
+      dockerfile: books/Dockerfile
     restart: on-failure
     networks:
       cloudcomnet:
         aliases:
-          - app.product.cloudcom
-          - review.localhost
+          - app.book.cloudcom
+          - book.localhost
     expose:
-      - "38082"
+      - "8083"
     ports:
-      - "38082-38182:38082"
+      - "38082-38182:38083"
     depends_on:
       - product-db
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 512M
+#
 
-
-  reviews-db:
+  ratings-db:
     build:
       context: .
-      dockerfile: reviews-db/Dockerfile
+      dockerfile: ratings-db/Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
     expose:
-     - "23306"
+      - "33306"
     ports:
-     - "23306:3306"
+      - "33306:3306"
     networks:
       cloudcomnet:
+#        ipv4_address: 172.18.0.3
         aliases:
-          - db.reviews.cloudcom
+          - db.ratings.cloudcom
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 512M
+#    volumes:
+#      - "./data/ratings/db/mysql:/var/lib/mysql"
 
 
-  reviews:
+  ratings:
     build:
       context: .
-      dockerfile: reviews/Dockerfile
+      dockerfile: ratings/Dockerfile
     restart: on-failure
     networks:
       cloudcomnet:
-        ipv4_address: 172.18.0.14
         aliases:
-        - app.reviews.cloudcom
+          - app.ratings.cloudcom
     expose:
-      - "28082"
+      - "8082"
     ports:
-      - "28082-28182:8081"
+      - "18082-18182:8082"
     depends_on:
-      - reviews-db
+      - ratings-db
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 512M
+#
 
+#  reviews-db:
+#    build:
+#      context: .
+#      dockerfile: reviews-db/Dockerfile
+#    environment:
+#      MYSQL_ROOT_PASSWORD: cloudcom2018
+#    expose:
+#     - "23306"
+#    ports:
+#     - "23306:3306"
+#    networks:
+#      cloudcomnet:
+#        aliases:
+#          - db.reviews.cloudcom
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 512M
+#    volumes:
+#        - "./data/reviews/db/mysql:/var/lib/mysql"
+
+
+#  reviews:
+#    build:
+#      context: .
+#      dockerfile: reviews/Dockerfile
+#    restart: on-failure
+#    networks:
+#      cloudcomnet:
+##        ipv4_address: 172.18.0.14
+#        aliases:
+#        - app.reviews.cloudcom
+#    expose:
+#      - "8081"
+#    ports:
+#      - "28082-28182:8081"
+#    depends_on:
+#      - reviews-db
+##    deploy:
+##      resources:
+##        limits:
+##          memory: 512M
 
 
   apigateway:
@@ -132,7 +195,17 @@ services:
       - "10004-11004:10004"
     environment:
       - SERVICE_TAGS=traefik.enable=true,traefik.frontend.entryPoints=http,traefik.frontend.rule=Host:172.18.0.2
-
+    extra_hosts:
+      - "review.localhost:172.18.0.201"
+      - "apigateway.localhost:172.18.0.201"
+      - "product.localhost:172.18.0.201"
+      - "rating.localhost:172.18.0.201"
+      - "book.localhost:172.18.0.201"
+#    deploy:
+#      resources:
+#        limits:
+#          memory: 512M
+#
 
 
 networks:

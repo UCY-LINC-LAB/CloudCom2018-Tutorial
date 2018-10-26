@@ -3,7 +3,7 @@
 mvn clean install package
 
 docker-compose stop apigateway
-docker-compose rm apigateway
+docker-compose rm -f apigateway
 
 docker volume prune -f
 

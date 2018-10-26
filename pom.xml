@@ -12,8 +12,9 @@
         <module>product</module>
         <module>reviews</module>
         <module>ratings</module>
-        <module>eureka-sd</module>
+        <!--<module>eureka-sd</module>-->
         <module>apigateway</module>
+        <module>books</module>
 
     </modules>
 
