@@ -8,5 +8,5 @@ CREATE TABLE `ratings` (
 
 INSERT INTO ratings (bookid, rating) VALUES (1 , 5);
 INSERT INTO ratings (bookid, rating) VALUES (2 , 4);
-INSERT INTO ratings (bookid, rating) VALUES (3 , 3);
+INSERT INTO ratings (bookid, rating) VALUES (1 , 3);
 INSERT INTO ratings (bookid, rating) VALUES (4 , 5);
