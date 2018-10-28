@@ -137,8 +137,39 @@ services:
       - ratings-db
 
 
-
-
+#  reviews-db:
+#    image: mysql
+#    environment:
+#      MYSQL_ROOT_PASSWORD: cloudcom2018
+#      MYSQL_DATABASE: reviews
+#    expose:
+#     - "23306"
+#    ports:
+#     - "23306:3306"
+#    networks:
+#      cloudcomnet:
+#        aliases:
+#          - db.reviews.cloudcom
+#    volumes:
+#        - "./data/reviews/db/mysql:/var/lib/mysql"
+#        - "./reviews-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
+#
+#
+#  reviews:
+#    build:
+#      context: .
+#      dockerfile: reviews/Dockerfile
+#    restart: on-failure
+#    networks:
+#      cloudcomnet:
+#        aliases:
+#          - app.reviews.cloudcom
+#    expose:
+#      - "8081"
+#    ports:
+#      - "28082-28182:8081"
+#    depends_on:
+#      - reviews-db
 
 networks:
   cloudcomnet:
