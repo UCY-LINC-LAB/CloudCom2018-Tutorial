@@ -44,7 +44,7 @@ public class APIController {
 
         Book[] books = new GsonBuilder().create().fromJson(futureTasks.get(0).get(), Book[].class);
         Rating[] ratings = new GsonBuilder().create().fromJson(futureTasks.get(2).get(), Rating[].class);
-//        Review[] reviews = new GsonBuilder().create().fromJson(futureTasks.get(1).get(), Review[].class);
+        Review[] reviews = new GsonBuilder().create().fromJson(futureTasks.get(1).get(), Review[].class);
         List<Product> products = new ArrayList<>();
 
         for (Book book: books){
@@ -55,11 +55,11 @@ public class APIController {
                     bookRatings.add(rating);
                 }
             }
-//            for (Review review : reviews){
-//                if (review.getBookid().equals(book.getId())){
-//                    bookReviews.add(review);
-//                }
-//            }
+            for (Review review : reviews){
+                if (review.getBookid().equals(book.getId())){
+                    bookReviews.add(review);
+                }
+            }
             products.add(new Product(book, bookRatings, bookReviews));
         }
 
