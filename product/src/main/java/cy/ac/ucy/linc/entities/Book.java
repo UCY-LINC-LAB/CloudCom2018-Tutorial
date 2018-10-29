@@ -1,16 +1,11 @@
 package cy.ac.ucy.linc.entities;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 
-@Entity
-@Table(name = "products")
 public class Book implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank

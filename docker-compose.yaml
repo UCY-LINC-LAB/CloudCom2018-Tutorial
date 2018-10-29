@@ -72,7 +72,7 @@ services:
       MYSQL_ROOT_PASSWORD: cloudcom2018
       MYSQL_DATABASE: products
     volumes:
-      - "./data/products/db/mysql:/var/lib/mysql"
+#      - "./data/products/db/mysql:/var/lib/mysql"
       - "./products-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
     expose:
       - "3306"
@@ -108,15 +108,15 @@ services:
       MYSQL_ROOT_PASSWORD: cloudcom2018
       MYSQL_DATABASE: ratings
     volumes:
-      - "./data/ratings/db/mysql:/var/lib/mysql"
+#      - "./data/ratings/db/mysql:/var/lib/mysql"
       - "./ratings-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
     expose:
-      - "33306"
+      - "28306"
     ports:
-      - "33306:3306"
+      - "28306:3306"
     networks:
       cloudcomnet:
-        ipv4_address: 172.190.0.3
+        ipv4_address: 172.190.0.33
         aliases:
           - db.ratings.cloudcom
 
@@ -151,7 +151,7 @@ services:
         aliases:
           - db.reviews.cloudcom
     volumes:
-        - "./data/reviews/db/mysql:/var/lib/mysql"
+#        - "./data/reviews/db/mysql:/var/lib/mysql"
         - "./reviews-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
 
 
@@ -170,6 +170,18 @@ services:
       - "28082-28182:8081"
     depends_on:
       - reviews-db
+
+  product:
+    build:
+      context: .
+      dockerfile: product/Dockerfile
+    restart: on-failure
+    networks:
+      cloudcomnet:
+        aliases:
+          - app.product.cloudcom
+    expose:
+      - "38082"
 
 networks:
   cloudcomnet:
