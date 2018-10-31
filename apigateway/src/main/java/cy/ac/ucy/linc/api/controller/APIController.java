@@ -8,6 +8,7 @@ import cy.ac.ucy.linc.api.entities.Product;
 import cy.ac.ucy.linc.api.entities.Rating;
 import cy.ac.ucy.linc.api.entities.Review;
 import cy.ac.ucy.linc.api.utilities.GetRequestConc;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,7 @@ public class APIController {
     private static final List<String> endpoints =  endp.collect(Collectors.toList());
 
 
+    @CrossOrigin
     @GetMapping(value = "/all", produces = "application/json")
     public String getProductsCombinedAll() throws IOException, ExecutionException, InterruptedException {
 
