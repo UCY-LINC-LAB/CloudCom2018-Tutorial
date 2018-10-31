@@ -1,0 +1,135 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Book Name | Hello World</title>
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Bootstrap core CSS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="album.css" rel="stylesheet">
+</head>
+
+<body>
+
+<header>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <strong>Bookinfo CloudCom Tutorial 2018</strong>
+            </a>
+        </div>
+    </div>
+</header>
+
+<main role="main">
+
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">CloudCom 2018 Microservices Tutorial - Bookstore App</h1>
+            <p class="lead text-muted">This example deploys a sample application composed of four separate microservices used to demonstrate various concepts of Microservices. The application displays information about a book, similar to a single catalog entry of an online book store. Displayed on the page is a description of the book, book details and a few book reviews.<p>
+        </p>
+        </div>
+    </section>
+
+    <input th:type="hidden" id="pid" th:value="${pid}">
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+
+            <div class="row" id="product_results">
+
+                <!--<div class="col-md-4">-->
+                <!--<div class="card mb-4 shadow-sm">-->
+                <!--<img class="card-img-top" data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail" alt="Card image cap">-->
+                <!--<div class="card-body">-->
+                <!--<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>-->
+                <!--<div class="d-flex justify-content-between align-items-center">-->
+                <!--<div class="btn-group">-->
+                <!--<button type="button" class="btn btn-sm btn-outline-secondary">View</button>-->
+                <!--<button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>-->
+                <!--</div>-->
+                <!--<small class="text-muted">9 mins</small>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer class="text-muted">
+    <div class="container">
+        <p class="float-right">
+            <a href="#">Back to top</a>
+        </p>
+    </div>
+</footer>
+
+
+<script>
+
+    var productId = $("input#pid").val();
+    var apiUrl = "http://apigateway.localhost/api/v1/product/"+ productId ;
+
+    $.ajax({
+        url: apiUrl,
+        method: "GET",
+    })
+        .done(function(data){
+
+            var i;
+            var j;
+            for (i=0;i<data.length;i++){
+
+                $("#product_results").append(
+
+                    '<div class="col-md-4">' +
+                    '<div class="card mb-4 shadow-sm">' +
+                    '<img class="card-img-top" src="'+data[i].book.image+'" alt="'+data[i].book.title+'">' +
+                    '</div></div>'+
+                    '<div class="col-md-8">' +
+                    '<div class="card-body">' +
+                    '<h5>'+data[i].book.title+'</h5>'+
+                    '<p class="card-text">'+data[i].book.description+'</p>' +
+                    '<div class="d-flex justify-content-between align-items-center">' +
+                    '<div class="btn-group">'+
+                    '</div>'+
+                    '<small class="text-muted">9 mins</small>'+
+                    '</div></div></div>'
+
+
+                );
+
+                $("#product_results").append('<h3>Product Reviews</h3>');
+
+                for (j=0;j<data[i].reviews.length;j++){
+                    $("#product_results").append(
+
+                        '<hr /><br />'+
+                        '<p>'+data[i].reviews[j].review+'</p>'
+                    );
+                }
+            }
+        });
+
+</script>
+
+</body>
+</html>

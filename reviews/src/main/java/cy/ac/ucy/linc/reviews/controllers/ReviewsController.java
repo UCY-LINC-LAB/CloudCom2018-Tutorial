@@ -27,7 +27,7 @@ public class ReviewsController {
         return reviewRepository.findReviewById(reviewId);
     }
 
-    @GetMapping("/book/{bookId}")
+    @GetMapping(value = "/book/{bookId}", produces = "application/json")
     public List<Review> getBookReview(@PathVariable Long bookId){
         return reviewRepository.findReviewByBookid(bookId);
     }

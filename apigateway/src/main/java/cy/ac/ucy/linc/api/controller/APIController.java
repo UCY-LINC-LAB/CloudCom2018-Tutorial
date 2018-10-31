@@ -8,10 +8,7 @@ import cy.ac.ucy.linc.api.entities.Product;
 import cy.ac.ucy.linc.api.entities.Rating;
 import cy.ac.ucy.linc.api.entities.Review;
 import cy.ac.ucy.linc.api.utilities.GetRequestConc;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -31,6 +28,8 @@ public class APIController {
 
     private static final Stream<String> endp = Stream.of("http://book.localhost/books", "http://review.localhost/reviews", "http://rating.localhost/ratings"); // , "http://product.localhost", "http://rating.localhost");
     private static final List<String> endpoints =  endp.collect(Collectors.toList());
+    private static final Stream<String> productendp = Stream.of("http://book.localhost/books/book", "http://review.localhost/reviews/book");
+    private static final List<String> prendpoints =  productendp.collect(Collectors.toList());
 
 
     @CrossOrigin
@@ -69,6 +68,55 @@ public class APIController {
 
 
         return retProducts;
+    }
+
+    @CrossOrigin
+    @GetMapping(value = "/product/{pid}", produces = "application/json")
+    public String getProductCombined(@PathVariable Long pid) throws ExecutionException, InterruptedException {
+
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
+        List<Book> books = new ArrayList<>();
+
+        List<Future<String>> futureTasks = new ArrayList<>();
+        for (String endpoint : prendpoints){
+            futureTasks.add(executorService.submit(new GetRequestConc(endpoint+"/"+pid.toString())));
+        }
+
+        Book book = new GsonBuilder().create().fromJson(futureTasks.get(0).get(), Book.class);
+//        Rating[] ratings = new GsonBuilder().create().fromJson(futureTasks.get(2).get(), Rating[].class);
+        Review[] reviews = new GsonBuilder().create().fromJson(futureTasks.get(1).get(), Review[].class);
+        List<Product> products = new ArrayList<>();
+        List<Review> bookReviews = new ArrayList<>();
+
+        for (Review review : reviews){
+           bookReviews.add(review);
+        }
+
+
+
+        products.add(new Product(book, null, bookReviews));
+
+//        for (Book bk: books){
+//            List<Rating> bookRatings = new ArrayList<>();
+           /* List<Review> bookReviews = new ArrayList<>();
+            for (Rating rating: ratings){
+                if (rating.getBookid() == book.getId()){
+                    bookRatings.add(rating);
+                }
+            }*/
+            /*for (Review review : reviews){
+                if (review.getBookid().equals(book.getId())){
+                    bookReviews.add(review);
+                }
+            }*/
+//            products.add(new Product(bk, null, null));
+//        }
+
+        String retProducts = new Gson().toJson(products);
+
+
+        return retProducts;
+//        return null;
     }
 
 
