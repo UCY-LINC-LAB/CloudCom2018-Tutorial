@@ -15,6 +15,7 @@
         <!--<module>eureka-sd</module>-->
         <module>apigateway</module>
         <module>books</module>
+        <module>zuulgateway</module>
 
     </modules>
 

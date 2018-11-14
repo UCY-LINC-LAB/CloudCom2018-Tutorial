@@ -42,6 +42,32 @@ services:
       - "80:80"
     command: traefik --consulcatalog.endpoint=172.190.0.200:8500
 
+#  zuulgateway:
+#    build:
+#      context: .
+#      dockerfile: zuulgateway/Dockerfile
+#    restart: on-failure
+#    networks:
+#      cloudcomnet:
+#        aliases:
+#        - app.zuulapi.cloudcom
+#    expose:
+#      - "19000"
+#      - "10004"
+#    ports:
+#      - "19000-20000:19000"
+#      - "10004-11004:10004"
+#    environment:
+#      - SERVICE_TAGS=traefik.enable=true,traefik.frontend.entryPoints=http,traefik.frontend.rule=Host:172.190.0.2
+#    extra_hosts:
+#      - "review.localhost:172.190.0.201"
+#      - "apigateway.localhost:172.190.0.201"
+#      - "product.localhost:172.190.0.201"
+#      - "rating.localhost:172.190.0.201"
+#      - "book.localhost:172.190.0.201"
+#      - "zuulgateway.localhost:172.190.0.201"
+
+
   apigateway:
     build:
       context: .
@@ -65,6 +91,7 @@ services:
       - "product.localhost:172.190.0.201"
       - "rating.localhost:172.190.0.201"
       - "book.localhost:172.190.0.201"
+      - "zuulgateway.localhost:172.190.0.201"
 #
 #  product-db:
 #    image: mariadb
