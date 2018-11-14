@@ -69,6 +69,26 @@
 
 
             </div>
+
+            <div class="row" id="product_reviews">
+                <div class="col-md-4">
+                    <h4>Product Ratings</h4>
+                    <div id="pratings">
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-8">
+                    <h4>Product Reviews</h4>
+
+                    <div id="previews">
+
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
 
@@ -96,7 +116,20 @@
 
             var i;
             var j;
+            var sum = 0;
+            var avg = 0;
             for (i=0;i<data.length;i++){
+
+                for (j=0;j<data[i].ratings.length;j++){
+                    $("#pratings").append(
+
+                        '<hr /><br />'+
+                        '<p>'+data[i].ratings[j].rating+'</p>'
+                    );
+                    sum += data[i].ratings[j].rating
+                }
+
+                avg = sum / data[i].ratings.length
 
                 $("#product_results").append(
 
@@ -111,21 +144,28 @@
                     '<div class="d-flex justify-content-between align-items-center">' +
                     '<div class="btn-group">'+
                     '</div>'+
-                    '<small class="text-muted">9 mins</small>'+
+                    '<small class="text-muted">Avg Rating:'+avg+'/5</small>'+
                     '</div></div></div>'
 
 
                 );
 
-                $("#product_results").append('<h3>Product Reviews</h3>');
 
                 for (j=0;j<data[i].reviews.length;j++){
-                    $("#product_results").append(
+                    $("#previews").append(
 
                         '<hr /><br />'+
                         '<p>'+data[i].reviews[j].review+'</p>'
                     );
                 }
+
+                // for (j=0;j<data[i].ratings.length;j++){
+                //     $("#pratings").append(
+                //
+                //         '<hr /><br />'+
+                //         '<p>'+data[i].ratings[j].rating+'</p>'
+                //     );
+                // }
             }
         });
 

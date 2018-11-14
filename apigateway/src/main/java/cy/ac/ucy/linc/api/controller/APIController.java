@@ -11,9 +11,7 @@ import cy.ac.ucy.linc.api.utilities.GetRequestConc;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +26,7 @@ public class APIController {
 
     private static final Stream<String> endp = Stream.of("http://book.localhost/books", "http://review.localhost/reviews", "http://rating.localhost/ratings"); // , "http://product.localhost", "http://rating.localhost");
     private static final List<String> endpoints =  endp.collect(Collectors.toList());
-    private static final Stream<String> productendp = Stream.of("http://book.localhost/books/book", "http://review.localhost/reviews/book");
+    private static final Stream<String> productendp = Stream.of("http://book.localhost/books/book", "http://review.localhost/reviews/book", "http://rating.localhost/ratings/book");
     private static final List<String> prendpoints =  productendp.collect(Collectors.toList());
 
 
@@ -83,40 +81,26 @@ public class APIController {
         }
 
         Book book = new GsonBuilder().create().fromJson(futureTasks.get(0).get(), Book.class);
-//        Rating[] ratings = new GsonBuilder().create().fromJson(futureTasks.get(2).get(), Rating[].class);
+        Rating[] ratings = new GsonBuilder().create().fromJson(futureTasks.get(2).get(), Rating[].class);
         Review[] reviews = new GsonBuilder().create().fromJson(futureTasks.get(1).get(), Review[].class);
         List<Product> products = new ArrayList<>();
         List<Review> bookReviews = new ArrayList<>();
+        List<Rating> bookRatings = new ArrayList<>();
+
 
         for (Review review : reviews){
            bookReviews.add(review);
         }
 
+        for (Rating rating: ratings){
+            bookRatings.add(rating);
+        }
 
-
-        products.add(new Product(book, null, bookReviews));
-
-//        for (Book bk: books){
-//            List<Rating> bookRatings = new ArrayList<>();
-           /* List<Review> bookReviews = new ArrayList<>();
-            for (Rating rating: ratings){
-                if (rating.getBookid() == book.getId()){
-                    bookRatings.add(rating);
-                }
-            }*/
-            /*for (Review review : reviews){
-                if (review.getBookid().equals(book.getId())){
-                    bookReviews.add(review);
-                }
-            }*/
-//            products.add(new Product(bk, null, null));
-//        }
+        products.add(new Product(book, bookRatings, bookReviews));
 
         String retProducts = new Gson().toJson(products);
 
-
         return retProducts;
-//        return null;
     }
 
 

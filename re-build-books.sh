@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mvn clean install book
+mvn clean install package
 
 docker-compose stop book
 docker-compose rm -f book

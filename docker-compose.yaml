@@ -65,24 +65,24 @@ services:
       - "product.localhost:172.190.0.201"
       - "rating.localhost:172.190.0.201"
       - "book.localhost:172.190.0.201"
-
-  product-db:
-    image: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: cloudcom2018
-      MYSQL_DATABASE: products
-    volumes:
-#      - "./data/products/db/mysql:/var/lib/mysql"
-      - "./products-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
-    expose:
-      - "3306"
-    ports:
-      - "13306:3306"
-    networks:
-      cloudcomnet:
-        ipv4_address: 172.190.0.23
-        aliases:
-          - db.products.cloudcom
+#
+#  product-db:
+#    image: mariadb
+#    environment:
+#      MYSQL_ROOT_PASSWORD: cloudcom2018
+#      MYSQL_DATABASE: products
+#    volumes:
+##      - "./data/products/db/mysql:/var/lib/mysql"
+#      - "./products-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
+#    expose:
+#      - "3306"
+#    ports:
+#      - "13306:3306"
+#    networks:
+#      cloudcomnet:
+#        ipv4_address: 172.190.0.23
+#        aliases:
+#          - db.products.cloudcom
 
   book:
     build:
@@ -99,26 +99,45 @@ services:
     ports:
       - "38082-38182:38083"
     depends_on:
-      - product-db
+      - container-db
+
+#
+#  ratings-db:
+#    image: mariadb
+#    environment:
+#      MYSQL_ROOT_PASSWORD: cloudcom2018
+#      MYSQL_DATABASE: ratings
+#    volumes:
+##      - "./data/ratings/db/mysql:/var/lib/mysql"
+#      - "./ratings-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
+#    expose:
+#      - "28306"
+#    ports:
+#      - "28306:3306"
+#    networks:
+#      cloudcomnet:
+#        ipv4_address: 172.190.0.33
+#        aliases:
+#          - db.ratings.cloudcom
 
 
-  ratings-db:
+  container-db:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: cloudcom2018
-      MYSQL_DATABASE: ratings
+      MYSQL_DATABASE: users
     volumes:
 #      - "./data/ratings/db/mysql:/var/lib/mysql"
-      - "./ratings-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
+      - "./container-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
     expose:
       - "28306"
     ports:
       - "28306:3306"
     networks:
       cloudcomnet:
-        ipv4_address: 172.190.0.33
+        ipv4_address: 172.190.0.116
         aliases:
-          - db.ratings.cloudcom
+          - db.container.cloudcom
 
   ratings:
     build:
@@ -134,26 +153,26 @@ services:
     ports:
       - "18082-18182:8082"
     depends_on:
-      - ratings-db
+      - container-db
 
-
-  reviews-db:
-    image: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: cloudcom2018
-      MYSQL_DATABASE: reviews
-    expose:
-     - "23306"
-    ports:
-     - "23306:3306"
-    networks:
-      cloudcomnet:
-        aliases:
-          - db.reviews.cloudcom
-    volumes:
-#        - "./data/reviews/db/mysql:/var/lib/mysql"
-        - "./reviews-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
-
+#
+#  reviews-db:
+#    image: mariadb
+#    environment:
+#      MYSQL_ROOT_PASSWORD: cloudcom2018
+#      MYSQL_DATABASE: reviews
+#    expose:
+#     - "23306"
+#    ports:
+#     - "23306:3306"
+#    networks:
+#      cloudcomnet:
+#        aliases:
+#          - db.reviews.cloudcom
+#    volumes:
+##        - "./data/reviews/db/mysql:/var/lib/mysql"
+#        - "./reviews-db/init-product.sql:/docker-entrypoint-initdb.d/init.sql"
+#
 
   reviews:
     build:
@@ -169,7 +188,7 @@ services:
     ports:
       - "28082-28182:8081"
     depends_on:
-      - reviews-db
+      - container-db
 
   product:
     build:
