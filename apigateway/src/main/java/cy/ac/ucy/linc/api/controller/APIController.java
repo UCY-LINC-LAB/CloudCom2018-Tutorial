@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1")
 public class APIController {
 
