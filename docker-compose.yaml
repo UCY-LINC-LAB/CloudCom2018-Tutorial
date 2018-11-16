@@ -228,6 +228,8 @@ services:
           - app.product.cloudcom
     expose:
       - "38082"
+    ports:
+      - "38582-38682:38082"
 
 networks:
   cloudcomnet:
