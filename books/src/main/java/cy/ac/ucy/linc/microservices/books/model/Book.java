@@ -1,4 +1,4 @@
-package cy.ac.ucy.linc.microservices.books.dao;
+package cy.ac.ucy.linc.microservices.books.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

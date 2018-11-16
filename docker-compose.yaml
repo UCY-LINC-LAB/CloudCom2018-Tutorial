@@ -124,7 +124,7 @@ services:
     expose:
       - "8083"
     ports:
-      - "38082-38182:38083"
+      - "38082-38182:8083"
     depends_on:
       - container-db
 

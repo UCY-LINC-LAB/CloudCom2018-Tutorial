@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,9 +39,27 @@ public class APIController {
             futureTasks.add(executorService.submit(new GetRequestConc(endpoint)));
         }
 
-        Book[] books = new GsonBuilder().create().fromJson(futureTasks.get(0).get(), Book[].class);
-        Rating[] ratings = new GsonBuilder().create().fromJson(futureTasks.get(2).get(), Rating[].class);
-        Review[] reviews = new GsonBuilder().create().fromJson(futureTasks.get(1).get(), Review[].class);
+        Book[] books = new Book[0];
+        try {
+            books = new GsonBuilder().create()
+                                     .fromJson(futureTasks.get(0).get(3, TimeUnit.SECONDS), Book[].class);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        Rating[] ratings = new Rating[0];
+        try {
+            ratings = new GsonBuilder().create()
+                    .fromJson(futureTasks.get(2).get(3, TimeUnit.SECONDS), Rating[].class);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        Review[] reviews = new Review[0];
+        try {
+            reviews = new GsonBuilder().create()
+                    .fromJson(futureTasks.get(1).get(3, TimeUnit.SECONDS), Review[].class);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
         List<Product> products = new ArrayList<>();
 
         for (Book book: books){
@@ -81,9 +96,24 @@ public class APIController {
             futureTasks.add(executorService.submit(new GetRequestConc(endpoint+"/"+pid.toString())));
         }
 
-        Book book = new GsonBuilder().create().fromJson(futureTasks.get(0).get(), Book.class);
-        Rating[] ratings = new GsonBuilder().create().fromJson(futureTasks.get(2).get(), Rating[].class);
-        Review[] reviews = new GsonBuilder().create().fromJson(futureTasks.get(1).get(), Review[].class);
+        Book book = null;
+        try {
+            book = new GsonBuilder().create().fromJson(futureTasks.get(0).get(3, TimeUnit.SECONDS), Book.class);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        Rating[] ratings = new Rating[0];
+        try {
+            ratings = new GsonBuilder().create().fromJson(futureTasks.get(2).get(3, TimeUnit.SECONDS), Rating[].class);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        Review[] reviews = new Review[0];
+        try {
+            reviews = new GsonBuilder().create().fromJson(futureTasks.get(1).get(3, TimeUnit.SECONDS), Review[].class);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
         List<Product> products = new ArrayList<>();
         List<Review> bookReviews = new ArrayList<>();
         List<Rating> bookRatings = new ArrayList<>();
