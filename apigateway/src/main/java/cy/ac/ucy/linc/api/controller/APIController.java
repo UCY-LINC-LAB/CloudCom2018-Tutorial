@@ -42,21 +42,24 @@ public class APIController {
         Book[] books = new Book[0];
         try {
             books = new GsonBuilder().create()
-                                     .fromJson(futureTasks.get(0).get(3, TimeUnit.SECONDS), Book[].class);
+                                     .fromJson(futureTasks.get(0).get(1, TimeUnit.SECONDS), Book[].class);
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
         Rating[] ratings = new Rating[0];
         try {
             ratings = new GsonBuilder().create()
-                    .fromJson(futureTasks.get(2).get(3, TimeUnit.SECONDS), Rating[].class);
+                    .fromJson(futureTasks.get(2).get(1, TimeUnit.SECONDS), Rating[].class);
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
         Review[] reviews = new Review[0];
         try {
+
             reviews = new GsonBuilder().create()
-                    .fromJson(futureTasks.get(1).get(3, TimeUnit.SECONDS), Review[].class);
+                    .fromJson(futureTasks.get(1).get(1, TimeUnit.SECONDS), Review[].class);
+
+
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
@@ -65,16 +68,24 @@ public class APIController {
         for (Book book: books){
             List<Rating> bookRatings = new ArrayList<>();
             List<Review> bookReviews = new ArrayList<>();
-            for (Rating rating: ratings){
-                if (rating.getBookid() == book.getId()){
-                    bookRatings.add(rating);
+
+            if (ratings != null) {
+                for (Rating rating: ratings){
+                    if (rating.getBookid() == book.getId()){
+                        bookRatings.add(rating);
+                    }
                 }
             }
-            for (Review review : reviews){
-                if (review.getBookid().equals(book.getId())){
-                    bookReviews.add(review);
+
+            if (reviews != null){
+
+                for (Review review : reviews){
+                    if (review.getBookid().equals(book.getId())){
+                        bookReviews.add(review);
+                    }
                 }
             }
+
             products.add(new Product(book, bookRatings, bookReviews));
         }
 
