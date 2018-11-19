@@ -38,7 +38,7 @@ public class GetRequestConc implements Callable<String> {
             @Override
             public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
                 HttpEntity entity = httpResponse.getEntity();
-                if (httpResponse.getStatusLine().getStatusCode()!=200){
+                if (httpResponse.getStatusLine().getStatusCode()==404){
                     return new String("");
                 }
                 return entity!=null? EntityUtils.toString(entity) : null;

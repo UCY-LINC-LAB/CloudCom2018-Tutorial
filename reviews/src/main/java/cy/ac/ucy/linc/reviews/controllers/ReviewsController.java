@@ -1,6 +1,6 @@
 package cy.ac.ucy.linc.reviews.controllers;
 
-import cy.ac.ucy.linc.reviews.dao.Review;
+import cy.ac.ucy.linc.reviews.model.Review;
 import cy.ac.ucy.linc.reviews.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

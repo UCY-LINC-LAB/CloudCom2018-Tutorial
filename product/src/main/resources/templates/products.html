@@ -101,6 +101,12 @@
 
                 avg = sum / data[i].ratings.length
 
+                var ratingMsg = 'Avg Rating'+avg+' out of 5';
+
+                if (data[i].ratings.length==0){
+                    ratingMsg = 'Rating Service currently unavailable';
+                }
+
                 $("#product_results").append(
 
                     '<div class="col-md-4">' +
@@ -113,7 +119,8 @@
                     '<div class="btn-group">'+
                     '<a class="btn btn-sm btn-outline-secondary" href="http://product.localhost/products/product/'+data[i].book.id+'">View</a>'+
                     '</div>'+
-                    '<small class="text-muted">Avg Rating:'+avg+'/5</small>'+
+                    // '<small class="text-muted">Avg Rating:'+avg+'/5</small>'+
+                    '<small class="text-muted">'+ratingMsg+'</small>'+
                     '</div></div></div></div>'
 
                 );

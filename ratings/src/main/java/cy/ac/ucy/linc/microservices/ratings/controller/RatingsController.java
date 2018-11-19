@@ -1,6 +1,6 @@
 package cy.ac.ucy.linc.microservices.ratings.controller;
 
-import cy.ac.ucy.linc.microservices.ratings.dao.Rating;
+import cy.ac.ucy.linc.microservices.ratings.model.Rating;
 import cy.ac.ucy.linc.microservices.ratings.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

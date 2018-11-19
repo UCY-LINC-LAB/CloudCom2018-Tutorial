@@ -1,11 +1,13 @@
-package cy.ac.ucy.linc.microservices.ratings.dao;
+package cy.ac.ucy.linc.reviews.model;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "ratings")
-public class Rating {
+@Table(name = "reviews")
+public class Review implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,7 +17,7 @@ public class Rating {
     private Long bookid;
 
     @NotBlank
-    private Integer rating;
+    private String review;
 
     public Long getId() {
         return id;
@@ -33,11 +35,12 @@ public class Rating {
         this.bookid = bookid;
     }
 
-    public Integer getRating() {
-        return rating;
+    public String getReview() {
+        return review;
     }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
+    public void setReview(String review) {
+        this.review = review;
     }
+
 }

@@ -1,6 +1,6 @@
 package cy.ac.ucy.linc.reviews.repositories;
 
-import cy.ac.ucy.linc.reviews.dao.Review;
+import cy.ac.ucy.linc.reviews.model.Review;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
