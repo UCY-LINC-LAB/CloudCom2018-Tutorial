@@ -18,18 +18,20 @@ import java.io.IOException;
 
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
+
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    private static final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
 
         String jwt = this.getJWTFromRequest(httpServletRequest);
+        logger.info("Valid Token: "+jwtTokenProvider.generateToken("user"));
 
         if (StringUtils.hasText(jwt) && jwtTokenProvider.isValidToken(jwt)){
 

@@ -17,6 +17,12 @@ public class ProductController {
     }
 
     @CrossOrigin
+    @GetMapping("/login")
+    public String login(Model model){
+        return "login.html";
+    }
+
+    @CrossOrigin
     @GetMapping("/products/product/{pid}")
     public String getSpecificProduct(Model model, @PathVariable int pid){
         model.addAttribute("pid", pid);
