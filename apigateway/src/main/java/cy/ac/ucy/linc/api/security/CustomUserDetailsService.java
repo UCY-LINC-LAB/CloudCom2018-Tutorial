@@ -19,7 +19,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public CustomUserDetailsService() {
 
-        users.add(new UserObject("user", "password", "ADMIN"));
+//        users.add(new UserObject("user", "password", "ADMIN"));
+        //Bcrypt for 'password'
+        users.add(new UserObject("user", "$2a$04$/mGiTrKjvu4NU4bzBx.HQOh8PC6ktW0GZ9pMh0f5unfWgEkYfpB8.", "ADMIN"));
     }
 
     @Override
