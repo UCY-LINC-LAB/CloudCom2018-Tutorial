@@ -83,6 +83,7 @@
 
 <script>
 
+
     $.ajax({
         url: "http://apigateway.localhost/api/v1/all",
         method: "GET",
@@ -125,7 +126,25 @@
 
                 );
             }
-        });
+        })
+        .error(function (httpObj, textStatus) {
+            if (httpObj.status == 401){
+                alert("Unauthorized");
+            }
+        })
+    ;
+
+    $.ajaxSetup({
+        statusCode: {
+            401: function(){
+                // Redirec the to the login page.
+                alert("Unauthorised");
+            }
+        }
+    });
+
+        
+
 
 </script>
 

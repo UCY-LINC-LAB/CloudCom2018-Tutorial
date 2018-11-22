@@ -111,6 +111,12 @@
     $.ajax({
         url: apiUrl,
         method: "GET",
+        statusCode: {
+            401: function () {
+                alert("Unauthorized");
+                window.location.replace("http://product.localhost/login");
+            }
+        }
     })
         .done(function(data){
 
@@ -167,7 +173,18 @@
                 //     );
                 // }
             }
-        });
+        })
+
+    ;
+
+    $.ajaxSetup({
+        statusCode: {
+            401: function(){
+                // Redirec the to the login page.
+                alert("Unauthorised");
+            }
+        }
+    });
 
 </script>
 
