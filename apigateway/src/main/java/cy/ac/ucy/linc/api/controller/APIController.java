@@ -8,6 +8,7 @@ import cy.ac.ucy.linc.api.entities.Product;
 import cy.ac.ucy.linc.api.entities.Rating;
 import cy.ac.ucy.linc.api.entities.Review;
 import cy.ac.ucy.linc.api.utilities.GetRequestConc;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.stream.Stream;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1")
+@Api
 public class APIController {
 
     private static final Stream<String> endp = Stream.of("http://book.localhost/books", "http://review.localhost/reviews", "http://rating.localhost/ratings"); // , "http://product.localhost", "http://rating.localhost");

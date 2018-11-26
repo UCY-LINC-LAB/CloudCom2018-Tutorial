@@ -102,10 +102,16 @@
 
                 avg = sum / data[i].ratings.length
 
-                var ratingMsg = 'Avg Rating'+avg+' out of 5';
+                var ratingMsg = 'Avg Rating '+avg+' out of 5';
 
                 if (data[i].ratings.length==0){
                     ratingMsg = 'Rating Service currently unavailable';
+                }
+
+               var reviewsMsg = 'There are currently no reviews available';
+
+                if (data[i].reviews.length > 0){
+                    reviewsMsg = "There are "+data[i].reviews.length+" reviews";
                 }
 
                 $("#product_results").append(
@@ -121,7 +127,8 @@
                     '<a class="btn btn-sm btn-outline-secondary" href="http://product.localhost/products/product/'+data[i].book.id+'">View</a>'+
                     '</div>'+
                     // '<small class="text-muted">Avg Rating:'+avg+'/5</small>'+
-                    '<small class="text-muted">'+ratingMsg+'</small>'+
+                    '<small class="text-muted">'+ratingMsg+'</small> <br/>'+
+                    '<small class="text-muted">'+reviewsMsg+'</small> <br/>'+
                     '</div></div></div></div>'
 
                 );
