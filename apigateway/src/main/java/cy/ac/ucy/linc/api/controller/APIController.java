@@ -3,6 +3,7 @@ package cy.ac.ucy.linc.api.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import cy.ac.ucy.linc.api.config.EndpointsConfig;
 import cy.ac.ucy.linc.api.entities.Book;
 import cy.ac.ucy.linc.api.entities.Product;
 import cy.ac.ucy.linc.api.entities.Rating;
@@ -10,6 +11,7 @@ import cy.ac.ucy.linc.api.entities.Review;
 import cy.ac.ucy.linc.api.utilities.GetRequestConc;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -25,17 +27,26 @@ import java.util.stream.Stream;
 @Api(value = "apicontroller", description = "API Rest controller for the bokstore")
 public class APIController {
 
-    private static final Stream<String> endp = Stream.of("http://book.localhost/books", "http://review.localhost/reviews", "http://rating.localhost/ratings"); // , "http://product.localhost", "http://rating.localhost");
-    private static final List<String> endpoints =  endp.collect(Collectors.toList());
-    private static final Stream<String> productendp = Stream.of("http://book.localhost/books/book", "http://review.localhost/reviews/book", "http://rating.localhost/ratings/book");
-    private static final List<String> prendpoints =  productendp.collect(Collectors.toList());
+    private List<String> endpoints = new ArrayList<>();
+    private List<String> prendpoints = new ArrayList<>();
 
+    /*
+
+        private static final Stream<String> endp = Stream.of("http://book.localhost/books", "http://review.localhost/reviews", "http://rating.localhost/ratings"); // , "http://product.localhost", "http://rating.localhost");
+        private static final List<String> endpoints =  endp.collect(Collectors.toList());
+        private static final Stream<String> productendp = Stream.of("http://book.localhost/books/book", "http://review.localhost/reviews/book", "http://rating.localhost/ratings/book");
+        private static final List<String> prendpoints =  productendp.collect(Collectors.toList());
+
+    */
+    @Autowired
+    private EndpointsConfig endpointsConfig;
 
     @CrossOrigin
     @ApiOperation(value = "Get all books with their reviews and ratings" )
     @GetMapping(value = "/all", produces = "application/json")
     public String getProductsCombinedAll() throws IOException, ExecutionException, InterruptedException {
 
+        endpoints = endpointsConfig.getProductsall();
         ExecutorService executorService = Executors.newFixedThreadPool(3);
 
         List<Future<String>> futureTasks = new ArrayList<>();
@@ -104,6 +115,7 @@ public class APIController {
     @GetMapping(value = "/product/{pid}", produces = "application/json")
     public String getProductCombined(@PathVariable Long pid) throws ExecutionException, InterruptedException {
 
+        prendpoints = endpointsConfig.getProduct();
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         List<Book> books = new ArrayList<>();
 
