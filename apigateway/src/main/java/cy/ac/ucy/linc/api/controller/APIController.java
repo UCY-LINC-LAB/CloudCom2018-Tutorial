@@ -9,6 +9,7 @@ import cy.ac.ucy.linc.api.entities.Rating;
 import cy.ac.ucy.linc.api.entities.Review;
 import cy.ac.ucy.linc.api.utilities.GetRequestConc;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1")
-@Api
+@Api(value = "apicontroller", description = "API Rest controller for the bokstore")
 public class APIController {
 
     private static final Stream<String> endp = Stream.of("http://book.localhost/books", "http://review.localhost/reviews", "http://rating.localhost/ratings"); // , "http://product.localhost", "http://rating.localhost");
@@ -31,6 +32,7 @@ public class APIController {
 
 
     @CrossOrigin
+    @ApiOperation(value = "Get all books with their reviews and ratings" )
     @GetMapping(value = "/all", produces = "application/json")
     public String getProductsCombinedAll() throws IOException, ExecutionException, InterruptedException {
 
@@ -98,6 +100,7 @@ public class APIController {
     }
 
     @CrossOrigin
+    @ApiOperation(value = "Get book info with their reviews and ratings by ID" )
     @GetMapping(value = "/product/{pid}", produces = "application/json")
     public String getProductCombined(@PathVariable Long pid) throws ExecutionException, InterruptedException {
 
