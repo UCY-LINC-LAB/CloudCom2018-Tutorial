@@ -18,7 +18,7 @@ defaultEntryPoints = ["http"]
 #
 
 address = ":8080"
-
+#address = ":80"
 
 # Enable Consul Catalog Provider.
 [consulCatalog]
