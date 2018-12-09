@@ -54,15 +54,33 @@ In addition to the main services there are 2 additional infrastructure services 
 Spring Boot is based on [Spring Framework](https://spring.io/).
 
 ### Docker
+
+[Docker](https://www.docker.com/) is a tool designed to make it easier to create, deploy, and run applications by using containers. Containers allow a developer to package up an application with all of the parts it needs, such as libraries and other dependencies, and ship it all out as one package. By doing so, thanks to the container, the developer can rest assured that the application will run on any other Linux machine regardless of any customized settings that machine might have that could differ from the machine used for writing and testing the code.
+
 ### Consul
+
+[Consul](https://www.consul.io/) is a service mesh solution providing a full featured control plane with service discovery, configuration, and segmentation functionality. The key features of Consul are:
+
+* **Service Discovery**: Clients of Consul can register a service, such as api or mysql, and other clients can use Consul to discover providers of a given service. Using either DNS or HTTP, applications can easily find the services they depend upon.
+* **Health Checking**: Consul clients can provide any number of health checks, either associated with a given service ("is the webserver returning 200 OK"), or with the local node ("is memory utilization below 90%"). This information can be used by an operator to monitor cluster health, and it is used by the service discovery components to route traffic away from unhealthy hosts.
+* **KV Store**: Applications can make use of Consul's hierarchical key/value store for any number of purposes, including dynamic configuration, feature flagging, coordination, leader election, and more. The simple HTTP API makes it easy to use.
+
+Consul is designed to be friendly to both the DevOps community and application developers, making it perfect for modern, elastic infrastructures.
+
 ### Traefik
+
+[Traefik](https://docs.traefik.io/) is a modern HTTP reverse proxy and load balancer that makes deploying microservices easy. 
+
 ### JWT
+[JSON Web Token (JWT)](https://jwt.io/) is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object. This information can be verified and trusted because it is digitally signed. 
 
 ## Prerequisites
-* Docker
-* JAVA 8
-* Maven
-* Docker Compose
+To be able to run the source code of this repo you will need the following installed 
+
+1. Java 8+ [For installation instructions click here](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+2. Maven [For installation instaructions click here](https://maven.apache.org/install.html)
+3. Docker [For installation instaructions click here](https://docs.docker.com/install/#supported-platforms)
+4. Docker Compose [For installation instaructions click here](https://docs.docker.com/compose/install/)
 
 ## How to run
 
