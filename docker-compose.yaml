@@ -217,19 +217,35 @@ services:
     depends_on:
       - container-db
 
-  product:
+#  product:
+#    build:
+#      context: .
+#      dockerfile: product/Dockerfile
+#    restart: on-failure
+#    networks:
+#      cloudcomnet:
+#        aliases:
+#          - app.product.cloudcom
+#    expose:
+#      - "38082"
+#    ports:
+#      - "38582-38682:38082"
+
+  front-end:
     build:
       context: .
-      dockerfile: product/Dockerfile
+      dockerfile: cloudcom-frontend/Dockerfile
     restart: on-failure
     networks:
       cloudcomnet:
         aliases:
-          - app.product.cloudcom
+        - app.frontend.cloudcom
     expose:
-      - "38082"
+    - "38082"
     ports:
-      - "38582-38682:38082"
+    - "38582-38682:38082"
+
+
 
 networks:
   cloudcomnet:

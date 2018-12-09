@@ -1,0 +1,21 @@
+
+<mat-grid-list cols="2" >
+  <mat-grid-tile *ngFor="let product of products; index as i"><mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>{{product.book.title}}</mat-card-title>
+      <mat-card-subtitle *ngIf="product.reviews.length<=1; else plural ">{{product.reviews.length}} Review</mat-card-subtitle>
+      Average Rating: <mat-icon [matBadge]="ratings[i]" matBadgeColor="warn">grade</mat-icon>
+
+      <ng-template #plural><mat-card-subtitle>{{product.reviews.length}} Reviews</mat-card-subtitle></ng-template>
+    </mat-card-header>
+    <img mat-card-image src="{{product.book.image}}" alt="{{product.book.title}}">
+    <mat-card-content>
+      <p [innerHTML]="product.book.description"></p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button [routerLink]="['/products', product.book.id]" mat-raised-button color="primary">More Info</button>
+    </mat-card-actions>
+  </mat-card></mat-grid-tile>
+</mat-grid-list>
+
+

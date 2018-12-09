@@ -1,0 +1,12 @@
+<mat-tab-group>
+  <mat-tab label="Book Description">
+    <h1>{{book[0].book.title}}</h1>
+    <img src="{{book[0].book.image}}" alt="{{book[0].book.title}}"/>
+    <p [innerHTML]="book[0].book.description"></p>  </mat-tab>
+  <mat-tab label="Reviews">
+    <p *ngFor="let review of book[0].reviews;">{{review.review}}</p>
+  </mat-tab>
+  <mat-tab label="Ratings">
+    <p *ngFor="let rating of book[0].ratings;">{{rating.rating}}</p>
+  </mat-tab>
+</mat-tab-group>
