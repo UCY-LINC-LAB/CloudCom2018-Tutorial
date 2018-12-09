@@ -84,10 +84,22 @@ To be able to run the source code of this repo you will need the following insta
 
 ## How to run
 
-* Clone this project
-* cd into the project folder
-* run build-run-all.sh --> CAUTION! For now this script deletes all images and containers.
-* wait 4-5 minutes all services will be up and running --> need to improve on this time. 
+* Clone this project 
+
+`git clone https://github.com/UCY-LINC-LAB/CloudCom2018-Tutorial.git`
+
+* `cd` into the cloned project folder
+
+* run `./build-run-all.sh`
+ 
+* wait 4-5 minutes all services will be up and running  
+
+* to check the progress of the deployment run the command `docker ps -a`
+
+* visit http://localhost:8080 to see the Traefik dashboard and registered services
+
+
+   
 
 |Service | URL|
 |--------|----|
