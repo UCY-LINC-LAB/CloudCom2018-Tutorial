@@ -22,18 +22,24 @@ The *Bookstore App* has been developed having the basic microservice principles 
 ## Architecture
 ![Bookstore Microservice Architecture](assets/img/architecture.png)
 
-The Bookstore consists of 5 distinct services.
+The Bookstore consists of the following distinct services.
 
-* The **Books** service is responsible for handling 
-* The **Ratings** service is responsible for handling 
-* The **Reviews** service is responsible for handling 
-* The **Cart** service is responsible for handling 
-* The **Front-End** service is responsible for handling 
-* The **API Gateway** service is responsible for handling 
+* The **Books** service is responsible for handling product information regarding books such as title, author, description etc.
+
+* The **Ratings** service is responsible for handling operations regarding a star rating system for products 
+
+* The **Reviews** service is responsible for handling user based reviews
+ 
+* The **Cart** service is responsible for handling operations regarding items to be purchased 
+ 
+* The **Front-End** service is the user interface of the Bookstore App
+
+* The **API Gateway** service is the central service of the deployment. It is responsible to authenticate requests, knows (with the assistance of the Load Balancer/Reverse Proxy) how is the underlying deployment, routes the request to the services and performs aggregations on data from various services.
 
 In addition to the main services there are 2 additional infrastructure services that 
 
-* The **Service Registry** service is responsible for handling 
+* The **Service Registry** service acts as a service catalog. Whenever a new service is added to the deployment, it 
+ 
 * The **Front-End** service is responsible for handling 
   
 
