@@ -38,17 +38,25 @@ The Bookstore consists of the following distinct services.
 
 In addition to the main services there are 2 additional infrastructure services that 
 
-* The **Service Registry** service acts as a service catalog. Whenever a new service is added to the deployment, it 
+* The **Service Registry** service acts as a service catalog. Whenever a new service is added to the deployment, it automatically registers to the Consul Service Registry.
  
-* The **Front-End** service is responsible for handling 
+* The **Load Balancer/Reverse Proxy** service is responsible to route requests to the microservices deployed. It uses the Service Registry service to acquire knowledge of the deployed containers (what is their IP and what kind of services there are). It can be also configured to perform weighted routing which is useful for Canary Deployments, A/B Testing etc. 
   
 
 ## Key Technologies
-* Spring Boot
-* Docker
-* Consul
-* Traefik
-* JWT
+### Spring Boot
+[Spring Boot](https://spring.io/projects/spring-boot) is a java framework for building production-ready applications quickly and provides non-functional features such as:
+* Embedded servers to deploy within JVM containers
+* Application components are configured externally and automatically upon instantiation and runtime.
+* Inherently distributed with tools for service discovery, security, API gateways, circuit breaking, message-passing, database integration.
+* Open-source ecosystem with tons of smaller frameworks created (major contributors include Netflix, AWS, Spotify).
+
+Spring Boot is based on [Spring Framework](https://spring.io/).
+
+### Docker
+### Consul
+### Traefik
+### JWT
 
 ## Prerequisites
 * Docker
