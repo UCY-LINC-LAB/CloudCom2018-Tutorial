@@ -6,6 +6,11 @@
 
 docker-compose down --remove-orphans
 
+pushd cloudcom-frontend
+ng build --prod
+popd
+
+
 mvn clean install package
 
 #docker-compose rm -f
