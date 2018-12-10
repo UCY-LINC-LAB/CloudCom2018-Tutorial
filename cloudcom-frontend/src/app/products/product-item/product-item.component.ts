@@ -9,7 +9,7 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class ProductItemComponent implements OnInit {
 
-  book: [];
+  book = [];
 
   constructor(private productsService: ProductsService, private route: ActivatedRoute) { }
 

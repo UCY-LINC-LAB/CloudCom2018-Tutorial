@@ -4,6 +4,11 @@
 #docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q) -f
 #
 
+
+pushd cloudcom-frontend
+ng build --prod
+popd
+
 docker-compose down --remove-orphans
 
 pushd cloudcom-frontend
