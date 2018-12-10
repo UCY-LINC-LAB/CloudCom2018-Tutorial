@@ -8,15 +8,17 @@ import {Observable} from 'rxjs';
 })
 export class ProductsService {
 
+  apigateway = 'http://apigateway.localhost/api/v1';
+
   constructor(private http: HttpClient) { }
 
 
   getAll(): Observable<any> {
-    return this.http.get('http://10.16.3.98:10012/api/v1/all');
+    return this.http.get(this.apigateway+'/all');
   }
 
   getBook(bookid: string): Observable<any> {
-    return this.http.get('http://10.16.3.98:10012/api/v1/product/' + bookid);
+    return this.http.get(this.apigateway+'/product/' + bookid);
   }
 
 }
