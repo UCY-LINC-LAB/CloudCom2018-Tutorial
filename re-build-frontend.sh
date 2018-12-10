@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bashoduct/1
 
 #mvn clean install package
 #

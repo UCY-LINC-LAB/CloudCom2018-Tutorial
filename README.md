@@ -99,13 +99,30 @@ To be able to run the source code of this repo you will need the following insta
 * visit http://localhost:8080 to see the Traefik dashboard and registered services
 
 
-   
+## System Configuration - Local hostname   
+
+In Unix/MAC based environments open the `/etc/hosts` file with sudo privileges and add the following lines on top of the file 
+
+```
+127.0.0.1	product.localhost
+127.0.0.1	apigateway.localhost
+127.0.0.1	localhost
+```
+
+In Windows environments you will need to edit the file `c:\WINDOWS\system32\drivers\etc\hosts`
+
+### Production Configuration
+
+In case you need to migrate similar configurations to production you will have to edit the `A Records` of your DNS to point to the `Public IP` of the Traefik.
+In the Traefic configuration you will need to reconfigure the host names (front ends and backends) properly to match your domain
+
+## Run
 
 |Service | URL|
 |--------|----|
-| Product| http://localhost:38082/products|
-| Reviews| http://localhost:28082/reviews|
-| Rating | http://localhost:18082/ratings|
+| Front-End| http://product.localhost:38582/|
+| API Gateway| http://apigateway.localhost/api/v1/all|
+| Traefik Dashboard | http://localhost:8080|
 
 
 ---
