@@ -2,10 +2,9 @@
 
 ## Description
 The purpose of this repository is to provide all the necessary source code that accompanies the 
-CloudCom 2018 Tutorial Session entitled *[Designing Scalable and Secure Microservices by Embracing DevOps-as-a-Service Offerngs.](https://cyprusconferences.org/cloudcom2018/tutorials/)*
+CloudCom 2018 Tutorial Session entitled *[Designing Scalable and Secure Microservices by Embracing DevOps-as-a-Service Offerngs.](https://www.slideshare.net/DemetrisTrihinas/designing-scalable-and-secure-microservices-by-embracing-devopsasaservice-offerings)* (Slideshare Presentation)
 
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/ftRxxZ9FhjGaDE" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/DemetrisTrihinas/designing-scalable-and-secure-microservices-by-embracing-devopsasaservice-offerings" title="Designing Scalable and Secure Microservices by Embracing DevOps-as-a-Service Offerings" target="_blank">Designing Scalable and Secure Microservices by Embracing DevOps-as-a-Service Offerings</a> </strong> from <strong><a href="https://www.slideshare.net/DemetrisTrihinas" target="_blank">Demetris Trihinas</a></strong> </div>
 
 
 
