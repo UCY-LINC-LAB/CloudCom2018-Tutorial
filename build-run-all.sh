@@ -6,12 +6,14 @@
 
 
 pushd cloudcom-frontend
+npm install
 ng build --prod
 popd
 
 docker-compose down --remove-orphans
 
 pushd cloudcom-frontend
+npm install
 ng build --prod
 popd
 

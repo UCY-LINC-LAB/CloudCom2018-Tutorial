@@ -14,6 +14,7 @@
 
 
 pushd cloudcom-frontend
+npm install
 ng build --prod
 popd
 

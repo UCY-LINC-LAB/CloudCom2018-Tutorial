@@ -128,6 +128,9 @@ In the Traefic configuration you will need to reconfigure the host names (front 
 | API Gateway| http://apigateway.localhost/api/v1/all|
 | Traefik Dashboard | http://localhost:8080|
 
+The credentials to login are:
+`username: user`
+`password:password`
 
 ---
 
